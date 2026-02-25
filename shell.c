@@ -24,8 +24,10 @@ char *endi;
 short rnew;
 short cch;
 int sch;
+char usin[128];
 
 int main() {
+	setvbuf(stdout, NULL, _IONBF, 0);
 	// write os id to variable "endi"
 	FILE *fidi = fopen("/etc/os-release", "r");
 	char line[256];
@@ -61,13 +63,12 @@ int main() {
 
 	// ----- greeting block -----
 
-	// print user and computer name
+	// print greeting
 	gethostname(hostname, HOST_NAME_MAX);
-	printf("%s | %s", getlogin(), hostname);
 	getcwd(cwd, sizeof(cwd));
-	snprintf(prm, sizeof(prm), " | %s $ ", cwd);
-	
-	// print current path
+	snprintf(prm, sizeof(prm), "\n%s | %s | %s $ ", getlogin(), hostname, cwd);
+
+	// input command
 	cmd = readline(prm);
 	if (!cwd) break;
 	if (*cwd) {
@@ -78,6 +79,7 @@ int main() {
 
 	// command q (quit)
 	if (strncmp(cmd, "q", 1) == 0) {
+	    printf("\n");
 	    free(cmd);
 	    break;
 
@@ -85,9 +87,13 @@ int main() {
 	} else if (strncmp(cmd, "cd", 2) == 0) {
 	    chdir(cmd + 3);
 
+	// command sus
+	} else if (strncmp(cmd, "sus", 3) == 0) {
+	    printf("This looks kinda SUS...");
+
 	// command hi
 	} else if (strncmp(cmd, "hi", 2) == 0) {
-		printf("Hello!\n");
+		printf("Hello!");
 
 	// command news
 	} else if (strncmp(cmd, "news", 4) == 0) {
@@ -125,7 +131,6 @@ int main() {
 				printf("Cheese ball.");
 				break;
 		}
-		printf("\n");
 
 	// command rps (rock paper scissors)
 	} else if (strncmp(cmd, "rps", 3) == 0) {
@@ -157,15 +162,13 @@ int main() {
 	} else if (strncmp(cmd, "I am not a moron!", 17) == 0) {
 		printf("Yes, you are!!!\n");
 		sleep(1);
-		printf("You are the moron, they built to make me an idiot!\n");
+		printf("You are the moron, they built to make me an idiot!");
 
 	// command potato (reference to PWGood)
 	} else if (strncmp(cmd, "potato", 6) == 0) {
 		printf("Картошка!\n");
 		sleep(1);
-		printf("Картошка\n");
-		printf("Картошка\n");
-		printf("Картошка!\n");
+		printf("картошка\nкартошка\nкартошка!");
 
 	// command fu (update all)
 	} else if (strncmp(cmd, "ua", 2) == 0) {
